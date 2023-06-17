@@ -12,11 +12,6 @@ function AuthLoadingProfile() {
     const MySwal = withReactContent(Swal)
 
     useEffect(() => {
-      console.log('user', user);
-    }, [user])
-    
-
-    useEffect(() => {
         var myHeaders = new Headers();
         myHeaders.append("Authorization", "Bearer " + token);
 
@@ -49,8 +44,6 @@ function AuthLoadingProfile() {
 
   return (
     <>
-        {user.fname}
-        {user.lname}
     </>
   )
 }

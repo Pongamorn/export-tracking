@@ -19,7 +19,7 @@ function Loginform() {
         "password": "melivecode",
         "expiresIn": 60000
         }
-
+        
     function Submit (e) {
         e.preventDefault()
         fetch('https://www.melivecode.com/api/login',{
@@ -51,7 +51,7 @@ function Loginform() {
     } 
 
   return (
-        <div className="flex bg-white h-screen justify-center items-center flex-wrap">
+        <div className="flex bg-white h-screen justify-center items-center flex-wrap ani">
             <div className=' w-1/2 hidden sm:block'>
                 <img src={loginLogo} className=' object-cover w-full' alt="" />
             </div>
