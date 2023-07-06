@@ -15,6 +15,9 @@
     @apply text-blue-600 underline;
   }
 }
+.m-sideBar{
+  background-color: #8ED1FF;
+}
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

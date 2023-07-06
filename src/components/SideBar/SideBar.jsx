@@ -1,29 +1,50 @@
-import { Fragment, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import logoTOA from '../../img/logoTOA.svg'
+import { Fragment, useEffect, useState } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import logoTOA from "../../img/logoTOA.svg";
 import {
   Bars3Icon,
   FolderIcon,
   HomeIcon,
   UsersIcon,
   XMarkIcon,
-} from '@heroicons/react/24/outline'
+} from "@heroicons/react/24/outline";
 
-import { useNavigate } from 'react-router-dom'
-
-const navigation = [
-  { name: 'Home', href: '#', icon: HomeIcon, current: true },
-  { name: 'Admin', href: '#', icon: UsersIcon, current: false },
-  { name: 'Projects', href: '#', icon: FolderIcon, current: false },
-]
+import { useLocation, useNavigate } from "react-router-dom";
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 
-export default function Sidebar() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-  const navigate = useNavigate() 
+// eslint-disable-next-line react/prop-types
+export default function Sidebar({ children, menu }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [navigation, setNavigation] = useState([
+    {
+      name: "Tark LIst",
+      href: "/",
+      icon: HomeIcon,
+      current: menu === "/" ? true : false,
+    },
+    {
+      name: "Report",
+      href: "/report",
+      icon: UsersIcon,
+      current: menu === "/report" ? true : false,
+    },
+    {
+      name: "User",
+      href: "/user",
+      icon: FolderIcon,
+      current: menu === "/user" ? true : false,
+    },
+  ]);
+  const navigate = useNavigate();
+  const logout = () => {
+    localStorage.removeItem("access_token");
+    navigate("/login");
+  };
+  console.log("menu", menu);
+
   return (
     <>
       {/*
@@ -36,7 +57,11 @@ export default function Sidebar() {
       */}
       <div>
         <Transition.Root show={sidebarOpen} as={Fragment}>
-          <Dialog as="div" className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
+          <Dialog
+            as="div"
+            className="relative z-50 lg:hidden"
+            onClose={setSidebarOpen}
+          >
             <Transition.Child
               as={Fragment}
               enter="transition-opacity ease-linear duration-300"
@@ -70,14 +95,21 @@ export default function Sidebar() {
                     leaveTo="opacity-0"
                   >
                     <div className="absolute left-full top-0 flex w-16 justify-center pt-5">
-                      <button type="button" className="-m-2.5 p-2.5" onClick={() => setSidebarOpen(false)}>
+                      <button
+                        type="button"
+                        className="-m-2.5 p-2.5"
+                        onClick={() => setSidebarOpen(false)}
+                      >
                         <span className="sr-only">Close sidebar</span>
-                        <XMarkIcon className="h-6 w-6 text-white" aria-hidden="true" />
+                        <XMarkIcon
+                          className="h-6 w-6 text-white"
+                          aria-hidden="true"
+                        />
                       </button>
                     </div>
                   </Transition.Child>
                   {/* Sidebar component, swap this element with another sidebar if you like */}
-                  <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6 pb-2">
+                  <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6 pb-2 m-sideBar">
                     <div className="flex h-16 shrink-0 items-center">
                       <img
                         className="h-8 w-auto"
@@ -95,15 +127,18 @@ export default function Sidebar() {
                                   href={item.href}
                                   className={classNames(
                                     item.current
-                                      ? 'bg-indigo-700 text-white'
-                                      : 'text-indigo-200 hover:text-white hover:bg-indigo-700',
-                                    'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
+                                      ? "bg-white text-white"
+                                      : "text-indigo-200 hover:text-white hover:bg-indigo-700",
+                                    "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                                   )}
+                                  style={{ color: "#0F62AE" }}
                                 >
                                   <item.icon
                                     className={classNames(
-                                      item.current ? 'text-white' : 'text-indigo-200 group-hover:text-white',
-                                      'h-6 w-6 shrink-0'
+                                      item.current
+                                        ? "text-[#0F61AE]"
+                                        : "text-white group-hover:text-white",
+                                      "h-6 w-6 shrink-0"
                                     )}
                                     aria-hidden="true"
                                   />
@@ -113,7 +148,6 @@ export default function Sidebar() {
                             ))}
                           </ul>
                         </li>
-                        
                       </ul>
                     </nav>
                   </div>
@@ -126,13 +160,9 @@ export default function Sidebar() {
         {/* Static sidebar for desktop */}
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6">
+          <div className="flex grow flex-col gap-y-5 overflow-y-auto m-sideBar px-6 drop-shadow-2xl ">
             <div className="flex h-16 shrink-0 items-center">
-              <img
-                className="h-8 w-auto"
-                src={logoTOA}
-                alt="TOA Paint"
-              />
+              <img className="h-8 w-auto" src={logoTOA} alt="TOA Paint" />
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -144,15 +174,18 @@ export default function Sidebar() {
                           href={item.href}
                           className={classNames(
                             item.current
-                              ? 'bg-indigo-700 text-white'
-                              : 'text-indigo-200 hover:text-white hover:bg-indigo-700',
-                            'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
+                              ? " bg-white text-white"
+                              : "text-indigo-200 hover:text-[#0F61AE] hover:bg-white",
+                            "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                           )}
+                          style={{ color: "#0F62AE" }}
                         >
                           <item.icon
                             className={classNames(
-                              item.current ? 'text-white' : 'text-indigo-200 group-hover:text-white',
-                              'h-6 w-6 shrink-0'
+                              item.current
+                                ? " text-[#0F61AE]"
+                                : "text-white group-hover:text-[#0F61AE]",
+                              "h-6 w-6 shrink-0"
                             )}
                             aria-hidden="true"
                           />
@@ -162,15 +195,12 @@ export default function Sidebar() {
                     ))}
                   </ul>
                 </li>
-                
+
                 <li className="-mx-6 mt-auto">
                   <a
                     href="#"
                     className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-white hover:bg-indigo-700"
-                    onClick={() => {
-                        localStorage.removeItem('token')
-                        navigate('/')
-                    }}
+                    onClick={logout}
                   >
                     <img
                       className="h-8 w-8 rounded-full bg-indigo-700"
@@ -186,13 +216,19 @@ export default function Sidebar() {
           </div>
         </div>
 
-        <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-indigo-600 px-4 py-4 shadow-sm sm:px-6 lg:hidden">
-          <button type="button" className="-m-2.5 p-2.5 text-indigo-200 lg:hidden" onClick={() => setSidebarOpen(true)}>
+        <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-[#8ED1FF] px-4 py-4 shadow-sm sm:px-6 lg:hidden">
+          <button
+            type="button"
+            className="-m-2.5 p-2.5 text-indigo-200 lg:hidden"
+            onClick={() => setSidebarOpen(true)}
+          >
             <span className="sr-only">Open sidebar</span>
-            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+            <Bars3Icon className="h-6 w-6 text-white" aria-hidden="true" />
           </button>
-          <div className="flex-1 text-sm font-semibold leading-6 text-white">Dashboard</div>
-          <a href="#">
+          <div className="flex-1 text-sm font-semibold leading-6 text-white">
+            Dashboard
+          </div>
+          <a href="#" onClick={logout}>
             <span className="sr-only">Your profile</span>
             <img
               className="h-8 w-8 rounded-full bg-indigo-700"
@@ -203,9 +239,9 @@ export default function Sidebar() {
         </div>
 
         <main className="py-10 lg:pl-72">
-          <div className="px-4 sm:px-6 lg:px-8">{/* Your content */}</div>
+          <div className="px-4 sm:px-6 lg:px-8">{children}</div>
         </main>
       </div>
     </>
-  )
+  );
 }

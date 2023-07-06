@@ -9,7 +9,7 @@ export default {
       colors: {
         'btn': '#17A5D1',
       }
-    },
+    }
   },
   plugins: [],
 }
