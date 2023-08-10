@@ -61,7 +61,7 @@ export default function Register() {
     }
     console.log(requestOptions);
 
-    fetch("https://api-export-tracking.to-ap.com/user/register", requestOptions)
+    fetch("https://api_export-tracking.to-ap.com/user/register", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         console.log(result);

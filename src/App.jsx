@@ -7,6 +7,8 @@ import Report from "./page/Report";
 import User from "./page/User";
 import Navigator from "./components/MUISidebar/MUISideBar";
 import { ThemeProvider, createTheme } from "@mui/material";
+import Loading from "./components/Loading/Loading";
+import AdminDetail from "./page/AdminDetail";
 
 function App() {
   const theme = createTheme({
@@ -27,9 +29,11 @@ function App() {
             <Route path="/user" element={<User />} />
             <Route path="/" element={<Home />} />
             <Route path="/mui" element={<Navigator />} />
+            <Route path="/detail/:id" element={<AdminDetail />} />
           </Route>
           <Route path="/login" element={<Loginform />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/load" element={<Loading />} />
         </Routes>
       </ThemeProvider>
     </BrowserRouter>
