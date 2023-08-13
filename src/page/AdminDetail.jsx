@@ -10,6 +10,9 @@ import {
   Box,
   TextField,
   Radio,
+  RadioGroup,
+  FormControl,
+  FormControlLabel,
 } from "@mui/material";
 
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -43,8 +46,16 @@ const AdminDetail = () => {
     "Shipping Doc",
     "PRE - ALERT",
   ];
+  const changeDate = (date) => {
+    try {
+      console.log("date", date);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Sidebar menu="/detail">
+      {/* Step at TOP */}
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Stepper activeStep={4} alternativeLabel>
@@ -56,6 +67,8 @@ const AdminDetail = () => {
           </Stepper>
         </Grid>
       </Grid>
+
+      {/* Show detail in border dotted */}
       <Box sx={{ my: 10, border: "4px #B1E8F4 dotted", p: 7, borderRadius: 5 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
@@ -95,27 +108,15 @@ const AdminDetail = () => {
               <Typography variant="h5" sx={item}>
                 Mode of Transport
               </Typography>
-              <Radio
-                checked={selectedValue === "a"}
-                onChange={handleChange}
-                value="a"
-                name="radio-buttons"
-                inputProps={{ "aria-label": "A" }}
-              />
-              <Radio
-                checked={selectedValue === "b"}
-                onChange={handleChange}
-                value="b"
-                name="radio-buttons"
-                inputProps={{ "aria-label": "B" }}
-              />
-              <Radio
-                checked={selectedValue === "c"}
-                onChange={handleChange}
-                value="c"
-                name="radio-buttons"
-                inputProps={{ "aria-label": "C" }}
-              />
+              <RadioGroup row onChange={(e) => console.log(e.target.value)}>
+                <FormControlLabel value="SEA" control={<Radio />} label="SEA" />
+                <FormControlLabel
+                  value="TRUCK"
+                  control={<Radio />}
+                  label="TRUCK"
+                />
+                <FormControlLabel value="AIR" control={<Radio />} label="AIR" />
+              </RadioGroup>
             </Box>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -128,7 +129,7 @@ const AdminDetail = () => {
                   <DatePicker
                     label="Select Date"
                     format="DD/MM/YYYY"
-                    onChange={(e) => console.log(e)}
+                    onChange={changeDate}
                   />
                 </DemoContainer>
               </LocalizationProvider>
@@ -160,6 +161,55 @@ const AdminDetail = () => {
           </Grid>
         </Grid>
       </Box>
+
+      {/* Show detail at bottom */}
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Typography variant="h4" mb={2}>
+            Update Invoice no.
+          </Typography>
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <Grid container spacing={2}>
+            <Grid item xs={6} sm={6}>
+              <Typography variant="h6">Delivery /Shipment No.</Typography>
+            </Grid>
+            <Grid item xs={6} sm={6}>
+              <Typography variant="p">4001507639 / 8100254083</Typography>
+            </Grid>
+            <Grid item xs={12} padding={4}>
+              <TextField
+                label="Invoice No."
+                size="small"
+                helperText="Please enter The invoice No"
+                fullWidth="true"
+                type="number"
+              ></TextField>
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <Grid container spacing={2}>
+            <Grid item xs={6} sm={6}>
+              <Typography variant="h6">Delivery /Shipment No.</Typography>
+            </Grid>
+            <Grid item xs={6} sm={6}>
+              <Typography variant="p">4001507639 / 8100254083</Typography>
+            </Grid>
+            <Grid item xs={12} padding={4}>
+              <TextField
+                label="Invoice No."
+                size="small"
+                helperText="Please enter The invoice No"
+                fullWidth="true"
+                type="number"
+              ></TextField>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
     </Sidebar>
   );
 };

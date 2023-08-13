@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Load1 from "../../assets/loading1.svg";
+import Load1 from "../../img/Bricks.svg";
 
 // eslint-disable-next-line react/prop-types
 const Loading = ({ children }) => {

@@ -3,11 +3,13 @@ import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import Sidebar from "../components/SideBar/SideBar";
 import rabbit from "../assets/rabbit.png";
+import Loading from "../components/Loading/Loading";
 import { Avatar, Button, Typography, Switch } from "@mui/material";
 
 const User = () => {
   const auth = localStorage.getItem("access_token");
   const [row, setRow] = React.useState([]);
+  const [load, setLoad] = React.useState(true);
 
   var myHeaders = new Headers();
 
@@ -20,12 +22,13 @@ const User = () => {
   };
 
   React.useEffect(() => {
+    console.log("load in useEffect", load);
     fetch("https://api_export-tracking.to-ap.com/user/list", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         console.log(result.data);
         setRow(result.data);
-        console.log(row);
+        setLoad(false);
       })
       .catch((error) => console.log("error", error));
   }, []);
@@ -129,30 +132,38 @@ const User = () => {
     },
   ];
 
-  return (
-    <Sidebar menu="/user">
-      <Typography variant="h3" component="h3" marginBottom={4}>
-        User
-      </Typography>
-      <Box sx={{ height: 800, width: "100%" }}>
-        <DataGrid
-          rows={row}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 10,
+  if (load) {
+    return (
+      <>
+        <Loading />
+      </>
+    );
+  } else {
+    return (
+      <Sidebar menu="/user">
+        <Typography variant="h3" component="h3" marginBottom={4}>
+          User
+        </Typography>
+        <Box sx={{ height: 800, width: "100%" }}>
+          <DataGrid
+            rows={row}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 10,
+                },
               },
-            },
-          }}
-          pageSizeOptions={[10]}
-          disableRowSelectionOnClick
-          onCellModesModelChange={(x) => console.log(x)}
-          loading={row.length > 0 ? false : true}
-        />
-      </Box>
-    </Sidebar>
-  );
+            }}
+            pageSizeOptions={[10]}
+            disableRowSelectionOnClick
+            onCellModesModelChange={(x) => console.log(x)}
+            loading={row.length > 0 ? false : true}
+          />
+        </Box>
+      </Sidebar>
+    );
+  }
 };
 
 export default User;
