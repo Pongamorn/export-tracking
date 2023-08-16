@@ -1,30 +1,44 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
-import { Button, Chip } from "@mui/material";
+import { Button, Chip, Grow } from "@mui/material";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import axios from "../../config/axios";
 
 export default function Table() {
+  const [data, setData] = React.useState({});
+  const fetchData = async () => {
+    const token = localStorage.getItem("access_token");
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    const res = await axios.get("/task/tasklist", config);
+    setData(res.data.data);
+  };
+  React.useEffect(() => {
+    fetchData();
+  }, []);
+
   const navigate = useNavigate();
   const columns = [
     {
-      field: "status",
+      field: "Status",
       headerName: "Status",
       width: 120,
     },
     {
-      field: "soldTo",
+      field: "SoldTo",
       headerName: "Sold To",
       width: 120,
     },
     {
-      field: "soldToName",
+      field: "SoldToName",
       headerName: "Sold To Name",
       width: 350,
     },
     {
-      field: "PINo",
+      field: "PI",
       headerName: "PI No.",
       width: 110,
     },
@@ -34,20 +48,18 @@ export default function Table() {
       width: 110,
     },
     {
-      field: "salesOrder",
+      field: "SONo",
       headerName: "Sales Order",
       width: 150,
     },
     {
-      field: "invoiceNo",
+      field: "InvoiceNo",
       headerName: "Invoice No.",
       width: 170,
       renderCell: (p) => {
-        const inv = rows[p.id - 1].invoiceNo;
-        // console.log("index", index);
-        // console.log(">>>>>>");
-        // console.log(p.id - 1);
-        console.log("p", p);
+        const fIndex = data.findIndex((e) => e.id === p.row.id);
+        const inv = data[fIndex].InvoiceNo;
+        // const inv = rows[p.id - 1].InvoiceNo;
         return (
           <Box
             key={p.id}
@@ -61,7 +73,7 @@ export default function Table() {
               <Chip
                 key={index}
                 sx={{ marginY: 1 }}
-                label={i}
+                label={i === null ? "No Invoice" : i}
                 color="info"
                 variant="outlined"
               />
@@ -75,7 +87,7 @@ export default function Table() {
       headerName: "Detail",
       width: 150,
       renderCell: (params) => {
-        console.log(params.row.id);
+        // console.log(params.row.id);
         return (
           <>
             <Button
@@ -92,48 +104,26 @@ export default function Table() {
     },
   ];
 
-  const rows = [
-    {
-      id: 1,
-      status: "In process",
-      soldTo: 15000011,
-      soldToName: "TOA COATING (CAMBODIA) CO., LTD. ",
-      PINo: "238/23",
-      PONo: "11003",
-      salesOrder: "2000934253",
-      invoiceNo: [6658412, 12344512],
-      // invoiceNo: mappedInvoice([6658412, 12344512]),
-    },
-    {
-      id: 2,
-      status: "In process",
-      soldTo: 15000012,
-      soldToName: "TOA TNAILAND",
-      PINo: "118/23",
-      PONo: "11443",
-      salesOrder: "30009342512",
-      invoiceNo: [12931111, 112003911],
-      // invoiceNo: mappedInvoice([6658412, 12344512]),
-    },
-  ];
   return (
-    <Box sx={{ height: 600, width: "100%" }} marginTop={4}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
+    <Grow in>
+      <Box sx={{ height: 800, width: "100%" }} marginTop={4}>
+        <DataGrid
+          rows={data}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 15,
+              },
             },
-          },
-        }}
-        pageSizeOptions={[5]}
-        disableRowSelectionOnClick
-        onRowClick={(e) => console.log(e)}
-        getRowHeight={() => "auto"}
-        rowHeight={100}
-      />
-    </Box>
+          }}
+          pageSizeOptions={[5]}
+          disableRowSelectionOnClick
+          onRowClick={(e) => console.log(e)}
+          getRowHeight={() => "auto"}
+          rowHeight={100}
+        />
+      </Box>
+    </Grow>
   );
 }

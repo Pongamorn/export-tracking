@@ -28,7 +28,9 @@ const User = () => {
       .then((result) => {
         console.log(result.data);
         setRow(result.data);
-        setLoad(false);
+        setTimeout(() => {
+          setLoad(false);
+        }, 1000);
       })
       .catch((error) => console.log("error", error));
   }, []);

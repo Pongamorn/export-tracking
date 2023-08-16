@@ -1,16 +1,16 @@
 import React from "react";
 import Sidebar from "../components/SideBar/SideBar";
-import { Paper, Typography } from "@mui/material";
+import { Grow, Typography, Box } from "@mui/material";
 
 function Report() {
   return (
-    <>
-      <Sidebar menu="/report">
-        <Paper elevation={3}>
+    <Sidebar menu="/report">
+      <Grow in timeout={900}>
+        <Box>
           <Typography variant="h4">Report</Typography>
-        </Paper>
-      </Sidebar>
-    </>
+        </Box>
+      </Grow>
+    </Sidebar>
   );
 }
 
