@@ -13,12 +13,15 @@ import {
   RadioGroup,
   FormControl,
   FormControlLabel,
+  Divider,
 } from "@mui/material";
 
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import FileUploader from "../components/fileUploader/fileUploader";
+
 const AdminDetail = () => {
   const [selectedValue, setSelectedValue] = React.useState("a");
 
@@ -181,9 +184,8 @@ const AdminDetail = () => {
             <Grid item xs={12} padding={4}>
               <TextField
                 label="Invoice No."
-                size="small"
                 helperText="Please enter The invoice No"
-                fullWidth="true"
+                fullWidth
                 type="number"
               ></TextField>
             </Grid>
@@ -201,15 +203,159 @@ const AdminDetail = () => {
             <Grid item xs={12} padding={4}>
               <TextField
                 label="Invoice No."
-                size="small"
                 helperText="Please enter The invoice No"
-                fullWidth="true"
+                fullWidth
                 type="number"
               ></TextField>
             </Grid>
           </Grid>
         </Grid>
       </Grid>
+
+      {/* Section Loading date */}
+      <Box>
+        <Grid container>
+          <Grid item xs={12}>
+            <Divider sx={{ marginY: 6, borderBottom: "4px #B1E8F4 dotted" }} />
+            <Typography variant="h4" mb={2}>
+              Loading date.
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid container spacing={4}>
+          <Grid item xs={12} sm={6}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer components={["DatePicker"]}>
+                <DatePicker
+                  label="Plan Load"
+                  format="DD/MM/YYYY"
+                  onChange={changeDate}
+                  sx={{ width: "100%" }}
+                />
+              </DemoContainer>
+            </LocalizationProvider>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer components={["DatePicker"]}>
+                <DatePicker
+                  label="Plan Load"
+                  format="DD/MM/YYYY"
+                  onChange={changeDate}
+                  sx={{ width: "100%" }}
+                />
+              </DemoContainer>
+            </LocalizationProvider>
+          </Grid>
+        </Grid>
+      </Box>
+
+      {/* Section Shipping Schedule*/}
+      <Box>
+        <Grid container>
+          <Grid item xs={12}>
+            <Divider sx={{ marginY: 6, borderBottom: "4px #B1E8F4 dotted" }} />
+            <Typography variant="h4" mb={2}>
+              Shipping Schedule
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid container spacing={4}>
+          <Grid item xs={12} sm={6}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer components={["DatePicker"]}>
+                <DatePicker
+                  label="Booking Date"
+                  format="DD/MM/YYYY"
+                  onChange={changeDate}
+                  sx={{ width: "100%" }}
+                />
+              </DemoContainer>
+            </LocalizationProvider>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer components={["DatePicker"]}>
+                <DatePicker
+                  label="Booking confirmation date"
+                  format="DD/MM/YYYY"
+                  onChange={changeDate}
+                  sx={{ width: "100%" }}
+                />
+              </DemoContainer>
+            </LocalizationProvider>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Booking no."
+              helperText="Please enter The Booking no"
+              fullWidth
+              type="text"
+            ></TextField>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Agent Name."
+              helperText="Please enter Agent Name"
+              fullWidth
+              type="text"
+            ></TextField>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="Vessel/Truck /Flight no."
+              helperText="Please enter data"
+              fullWidth
+              type="text"
+            ></TextField>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer components={["DatePicker"]} sx={{ p: 0 }}>
+                <DatePicker
+                  label="ETD"
+                  format="DD/MM/YYYY"
+                  onChange={changeDate}
+                  sx={{ width: "100%" }}
+                />
+              </DemoContainer>
+            </LocalizationProvider>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer components={["DatePicker"]} sx={{ p: 0 }}>
+                <DatePicker
+                  label="ETA"
+                  format="DD/MM/YYYY"
+                  onChange={changeDate}
+                  sx={{ width: "100%" }}
+                />
+              </DemoContainer>
+            </LocalizationProvider>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label="B/L, TWB, AWB no."
+              helperText="Please enter data"
+              fullWidth
+              type="text"
+            ></TextField>
+          </Grid>
+        </Grid>
+      </Box>
+
+      {/* Section Document*/}
+      <Box>
+        <Grid container>
+          <Grid item xs={12}>
+            <Divider sx={{ marginY: 6, borderBottom: "4px #B1E8F4 dotted" }} />
+            <Typography variant="h4" mb={2}>
+              Document
+            </Typography>
+          </Grid>
+        </Grid>
+        <FileUploader />
+      </Box>
     </Sidebar>
   );
 };

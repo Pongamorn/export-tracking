@@ -122,6 +122,7 @@ export default function Table() {
           onRowClick={(e) => console.log(e)}
           getRowHeight={() => "auto"}
           rowHeight={100}
+          loading={data.length > 0 ? false : true}
         />
       </Box>
     </Grow>
