@@ -1,0 +1,59 @@
+{
+    "data": [
+      {
+        "id": 2000934281,
+        "Step": 4,
+        "DataStep":[{
+            "StepName":"PO Received",
+            "StepStatus": "Completed",
+            "StepDate": "17/5/2023"
+        },
+        {
+            "StepName": "PI Cretated",
+            "StepStatus": "Completed",
+            "StepDate": "17/5/2023"
+        },
+        {
+            "StepName":"SO Created",
+            "StepStatus": "Completed",
+            "StepDate": "17/5/2023"
+        }],
+        "Status": "In process",
+        "SoldTo": "0015000011",
+        "SoldToName": "TOA COATING (CAMBODIA) CO., LTD.",
+        "PI": "239/23",
+        "PONo": "11004",
+        "SONo": 2000934281,
+        "PICreateDate": "2023-05-05",
+        "SOCreateDate": "2023-05-05",
+        "LastContDate": "2023-06-14",
+        "POReceiveDate": null,
+        "ModeTransportID": null,
+        "InvData": [
+          {
+            "DONumber": "4001532050",
+            "Shipment": null,
+            "InvoiceNo": null
+          },
+          {
+            "DONumber": "4001545145",
+            "Shipment": null,
+            "InvoiceNo": null
+          }
+        ],
+        "PlanLoadDate": null,
+        "LoadingDate": null,
+        "BookingDate": null,
+        "BookingConfDate": null,
+        "BookingNo": null,
+        "AgentName": null,
+        "VTFNo": null,
+        "ETDDate": null,
+        "ETADate": null,
+        "BLTANo": null,
+        "AttachFile": [],
+        "EmailReceiver": null
+      }
+    ]
+  }
+  

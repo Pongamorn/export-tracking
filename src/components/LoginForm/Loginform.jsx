@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 import { Link, useNavigate } from "react-router-dom";
+import { TextField } from "@mui/material";
 
 function Loginform() {
   const [user, setUser] = useState("");
@@ -15,14 +16,13 @@ function Loginform() {
 
   const MySwal = withReactContent(Swal);
   const loginData = {
-    username: "admin",
-    password: "123456",
+    username: user,
+    password: password,
   };
 
   function Submit(e) {
     e.preventDefault();
-    console.log("env", import.meta.env.VITE_TEST);
-    fetch(import.meta.env.VITE_LOGIN_URL_API, {
+    fetch("https://api_export-tracking.to-ap.com/user/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
@@ -79,14 +79,30 @@ function Loginform() {
               type="text"
               placeholder="USERNAME"
             />
-            <input
+            <TextField
+              label="password"
+              variant="outlined"
+              className="bg-white"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              type="password"
+              sx={{ mx: 5 }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AccountCircle />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            {/* <input
               onChange={(e) => setPassword(e.target.value)}
               value={password}
               className=" bg-white  mx-10 my-[15px] h-12 rounded-full px-3 "
               style={{ border: "1px solid #B1E8F4" }}
               type="password"
               placeholder="PASSWORD"
-            />
+            /> */}
             <div className="flex mx-14 mb-4 justify-between">
               <Link to="/register">
                 <p>Register</p>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Sidebar from "../components/SideBar/SideBar";
 import {
@@ -14,6 +14,8 @@ import {
   FormControl,
   FormControlLabel,
   Divider,
+  IconButton,
+  Button,
 } from "@mui/material";
 
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -21,14 +23,25 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import FileUploader from "../components/fileUploader/fileUploader";
+import EmailIcon from "@mui/icons-material/Email";
+import SendIcon from "@mui/icons-material/Send";
+import axios from "axios";
+import dayjs from "dayjs";
 
 const AdminDetail = () => {
   const [selectedValue, setSelectedValue] = React.useState("a");
-
+  const [dataSo, setDataSo] = useState([]);
+  const [load, setLoad] = useState(true);
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
   };
   const { id } = useParams();
+
+  const token = localStorage.getItem("access_token");
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+
   const flex = {
     display: "flex",
     justifyContent: "flex-start",
@@ -56,12 +69,35 @@ const AdminDetail = () => {
       console.log(error);
     }
   };
+
+  // Get data from API
+
+  const getData = async () => {
+    setLoad(true);
+    const datailData = await axios.get(`/task/doctaskbyso/${id}`, config);
+    setDataSo(datailData.data.data);
+    setLoad(false);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  // if (load === false) {
+  //   console.log("Data1", dataSo[0].SONo);
+  // }
+
   return (
     <Sidebar menu="/detail">
       {/* Step at TOP */}
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Stepper activeStep={4} alternativeLabel>
+          <Stepper
+            activeStep={8}
+            alternativeLabel
+            sx={{ overflow: "scroll", pb: { xs: 3, sm: 2 } }}
+            className=""
+          >
             {steps.map((label) => (
               <Step key={label}>
                 <StepLabel>{label}</StepLabel>
@@ -72,43 +108,43 @@ const AdminDetail = () => {
       </Grid>
 
       {/* Show detail in border dotted */}
-      <Box sx={{ my: 10, border: "4px #B1E8F4 dotted", p: 7, borderRadius: 5 }}>
+      <Box sx={{ my: 10, border: "4px #B1E8F4 dotted", p: 2, borderRadius: 5 }}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <Box sx={flex}>
-              <Typography variant="h5" sx={item}>
+              <Typography variant="h6" sx={item}>
                 PO No.
               </Typography>
               <Typography variant="p" sx={item}>
-                11003
+                {dataSo[0]?.PONo}
               </Typography>
             </Box>
             <Box sx={flex}>
-              <Typography variant="h5" sx={item}>
+              <Typography variant="h6" sx={item}>
                 PI No.
               </Typography>
               <Typography variant="p" sx={item}>
-                238/23
+                {dataSo[0]?.PI}
               </Typography>
             </Box>
             <Box sx={flex}>
-              <Typography variant="h5" sx={item}>
+              <Typography variant="h6" sx={item}>
                 Sales Order
               </Typography>
               <Typography variant="p" sx={item}>
-                2000934253
+                {dataSo[0]?.SONo}
               </Typography>
             </Box>
             <Box sx={flex}>
-              <Typography variant="h5" sx={item}>
+              <Typography variant="h6" sx={item}>
                 Sold To Name
               </Typography>
               <Typography variant="p" sx={item}>
-                TOA COATING (CAMBODIA) CO., LTD.
+                {dataSo[0]?.SoldToName}
               </Typography>
             </Box>
             <Box sx={flex}>
-              <Typography variant="h5" sx={item}>
+              <Typography variant="h6" sx={item}>
                 Mode of Transport
               </Typography>
               <RadioGroup row onChange={(e) => console.log(e.target.value)}>
@@ -124,7 +160,7 @@ const AdminDetail = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <Box sx={flex}>
-              <Typography variant="h5" sx={item}>
+              <Typography variant="h6" sx={item}>
                 PO Receive Date
               </Typography>
               <LocalizationProvider dateAdapter={AdapterDayjs} sx={item}>
@@ -133,32 +169,33 @@ const AdminDetail = () => {
                     label="Select Date"
                     format="DD/MM/YYYY"
                     onChange={changeDate}
+                    defaultValue={dayjs("2023/01/25")}
                   />
                 </DemoContainer>
               </LocalizationProvider>
             </Box>
             <Box sx={flex}>
-              <Typography variant="h5" sx={item}>
+              <Typography variant="h6" sx={item}>
                 PI Create Date
               </Typography>
               <Typography variant="p" sx={item}>
-                15/05/2023
+                {dataSo[0]?.PICreateDate}
               </Typography>
             </Box>
             <Box sx={flex}>
-              <Typography variant="h5" sx={item}>
+              <Typography variant="h6" sx={item}>
                 SO Created date
               </Typography>
               <Typography variant="p" sx={item}>
-                17/05/2023
+                {dataSo[0]?.SOCreateDate}
               </Typography>
             </Box>
             <Box sx={flex}>
-              <Typography variant="h5" sx={item}>
+              <Typography variant="h6" sx={item}>
                 Last contract date
               </Typography>
               <Typography variant="p" sx={item}>
-                17/6/2023
+                {dataSo[0]?.LastContDate}
               </Typography>
             </Box>
           </Grid>
@@ -355,6 +392,53 @@ const AdminDetail = () => {
           </Grid>
         </Grid>
         <FileUploader />
+      </Box>
+
+      {/* section Email */}
+      <Box sx={{ mb: 4 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Divider sx={{ marginY: 6, borderBottom: "4px #B1E8F4 dotted" }} />
+            <Typography variant="h4" mb={2}>
+              Email
+            </Typography>
+          </Grid>
+          <Grid item xs={10} sm={11}>
+            <TextField
+              label="Receiver"
+              helperText="Please enter Email"
+              fullWidth
+              type="email"
+            ></TextField>
+          </Grid>
+          <Grid item xs={1}>
+            <IconButton ccolor="primary" aria-label="send Email" size="large">
+              <EmailIcon fontSize="large" />
+            </IconButton>
+          </Grid>
+        </Grid>
+      </Box>
+
+      {/* Submit btn */}
+      <Box sx={{ m: 10 }}>
+        <Grid container spacing={5}>
+          <Grid item xs={12} sm={6}>
+            <Button fullWidth size="large" variant="outlined">
+              Cancle
+            </Button>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Button
+              fullWidth
+              size="large"
+              variant="contained"
+              color="success"
+              endIcon={<SendIcon />}
+            >
+              Save
+            </Button>
+          </Grid>
+        </Grid>
       </Box>
     </Sidebar>
   );
